@@ -7,11 +7,17 @@ AAuraCharacterBase::AAuraCharacterBase()
 {
 	// 基类没有必要每帧更新
 	PrimaryActorTick.bCanEverTick = false;
+
+	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
+	// 为武器设置插槽
+	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
+	// 武器禁用碰撞
+	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
