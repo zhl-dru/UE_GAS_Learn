@@ -5,11 +5,20 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	// 开启网络复制
 	bReplicates = true;
+}
+
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+
+	// 在每一帧跟踪鼠标
+	CursorTrace();
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -70,5 +79,64 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	// 获取鼠标命中结果
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
+	// 没有命中则跳出
+	if (!CursorHit.bBlockingHit)return;
+
+	// 尝试将命中的物体转换成敌人
+	LastActor = ThisActor;
+	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+
+	/*
+	 *	A. LastActor is null && ThisActor is null
+	 *		- 什么都不做
+	 *	B. LastActor is null && ThisActor is valid
+	 *		- 高亮 ThisActor
+	 *	C. LastActor is valid && ThisActor is null
+	 *		- 取消高亮 LastActor
+	 *	D. 都是 valid, LastActor != ThisActor
+	 *		- 取消高亮 LastActor, 高亮 ThisActor
+	 *	E. 都是 valid, LastActor == ThisActor
+	 *		- 什么都不做
+	 */
+	if (LastActor == nullptr)
+	{
+		if (ThisActor != nullptr)
+		{
+			// B
+			ThisActor->HighlightActor();
+		}
+		else
+		{
+			// A
+		}
+	}
+	else
+	{
+		if (ThisActor == nullptr)
+		{
+			// C
+			LastActor->UnHighlightActor();
+		}
+		else
+		{
+			if (LastActor != ThisActor)
+			{
+				// D
+				LastActor->UnHighlightActor();
+				ThisActor->HighlightActor();
+			}
+			else
+			{
+				// E
+			}
+		}
 	}
 }
