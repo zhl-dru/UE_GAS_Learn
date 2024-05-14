@@ -4,6 +4,7 @@
 #include "Player/AuraPlayerState.h"
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 
 AAuraPlayerState::AAuraPlayerState()
 {
@@ -15,7 +16,7 @@ AAuraPlayerState::AAuraPlayerState()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	// 创建GAS属性集
-	AttributeSet = CreateDefaultSubobject<UAttributeSet>("AttributeSet");
+	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 
 	// 设置服务器尝试更新客户端的频率为100次/秒
 	NetUpdateFrequency = 100.f;
