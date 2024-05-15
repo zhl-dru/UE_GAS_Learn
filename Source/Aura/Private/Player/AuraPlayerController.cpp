@@ -30,10 +30,9 @@ void AAuraPlayerController::BeginPlay()
 	// 获取本地玩家输入子系统的指针
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
 		GetLocalPlayer());
-	// 断言输入子系统
-	check(Subsystem);
 	// 将配置添加到子系统
-	Subsystem->AddMappingContext(AuraContext, 0);
+	if (Subsystem)
+		Subsystem->AddMappingContext(AuraContext, 0);
 
 	// 显示鼠标
 	bShowMouseCursor = true;
