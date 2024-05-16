@@ -3,10 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "AuraWidgetController.generated.h"
 
-class UAuraAttributeSet;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
@@ -48,6 +46,10 @@ class AURA_API UAuraWidgetController : public UObject
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
+	// 广播初始值
+	virtual void BroadcastInitialValues();
+	// 绑定回调到依赖项
+	virtual void BindCallbacksToDependencies();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="小部件控制器")
