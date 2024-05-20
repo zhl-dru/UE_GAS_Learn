@@ -33,7 +33,7 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	EffectContextHandle.AddSourceObject(this);
 	// 制作一个效果规范
 	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(
-		GameplayEffectClass, 1.f, EffectContextHandle);
+		GameplayEffectClass, ActorLevel, EffectContextHandle);
 	// 应用规范到自身
 	const FActiveGameplayEffectHandle ActiveEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(
 		*EffectSpecHandle.Data.Get());
