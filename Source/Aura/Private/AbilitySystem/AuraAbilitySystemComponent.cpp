@@ -13,5 +13,9 @@ void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* Ability
                                                 const FGameplayEffectSpec& EffectSpec,
                                                 FActiveGameplayEffectHandle ActiveEffectHandle)
 {
-	GEngine->AddOnScreenDebugMessage(1, 8.f, FColor::Blue, FString("应用效果"));
+	// 获取效果的Tag
+	FGameplayTagContainer TagContainer;
+	EffectSpec.GetAllAssetTags(TagContainer);
+	// 广播Tag
+	EffectAssetTags.Broadcast(TagContainer);
 }
