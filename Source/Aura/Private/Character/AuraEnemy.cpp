@@ -41,7 +41,12 @@ void AAuraEnemy::UnHighlightActor()
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	InitAbilityActorInfo();
+}
 
+void AAuraEnemy::InitAbilityActorInfo()
+{
 	// 设置GAS组件的相关成员
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 }
