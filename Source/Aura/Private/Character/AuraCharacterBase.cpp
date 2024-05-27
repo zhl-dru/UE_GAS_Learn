@@ -3,6 +3,8 @@
 
 #include "Character/AuraCharacterBase.h"
 
+#include "AbilitySystemComponent.h"
+
 AAuraCharacterBase::AAuraCharacterBase()
 {
 	// 基类没有必要每帧更新
@@ -27,4 +29,14 @@ void AAuraCharacterBase::BeginPlay()
 
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
+}
+
+void AAuraCharacterBase::InitPrimaryAttributes() const
+{
+	check(IsValid(GetAbilitySystemComponent()));
+	check(DefaultPrimaryAttributes);
+	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(
+		DefaultPrimaryAttributes, 1.f, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
 }
