@@ -38,6 +38,6 @@ private:
 
 	/*追踪鼠标*/
 	void CursorTrace();
-	TObjectPtr<IEnemyInterface> LastActor; // 上一个悬停的物体
-	TObjectPtr<IEnemyInterface> ThisActor; // 当前悬停的物体
+	IEnemyInterface* LastActor; // 上一个悬停的物体
+	IEnemyInterface* ThisActor; // 当前悬停的物体
 };
