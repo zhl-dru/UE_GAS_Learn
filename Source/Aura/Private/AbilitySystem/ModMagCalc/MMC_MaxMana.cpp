@@ -1,21 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AbilitySystem/ModMagald/MMC_MaxHealth.h"
+#include "AbilitySystem/ModMagCalc/MMC_MaxMana.h"
 
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Interaction/CombatInterface.h"
 
-UMMC_MaxHealth::UMMC_MaxHealth()
-{
-	VigorDef.AttributeToCapture = UAuraAttributeSet::GetVigorAttribute();
-	VigorDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
-	VigorDef.bSnapshot = false;
+class ICombatInterface;
 
-	RelevantAttributesToCapture.Add(VigorDef);
+UMMC_MaxMana::UMMC_MaxMana()
+{
+	IntDef.AttributeToCapture = UAuraAttributeSet::GetVigorAttribute();
+	IntDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
+	IntDef.bSnapshot = false;
+
+	RelevantAttributesToCapture.Add(IntDef);
 }
 
-float UMMC_MaxHealth::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
+float UMMC_MaxMana::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
 {
 	// 从源和目标收集标签
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
@@ -25,12 +27,12 @@ float UMMC_MaxHealth::CalculateBaseMagnitude_Implementation(const FGameplayEffec
 	EvaluateParameters.SourceTags = SourceTags;
 	EvaluateParameters.TargetTags = TargetTags;
 
-	float Vigor = 0.f;
-	GetCapturedAttributeMagnitude(VigorDef, Spec, EvaluateParameters, Vigor);
-	Vigor = FMath::Max<float>(Vigor, 0.f);
+	float Int = 0.f;
+	GetCapturedAttributeMagnitude(IntDef, Spec, EvaluateParameters, Int);
+	Int = FMath::Max<float>(Int, 0.f);
 
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(Spec.GetContext().GetSourceObject());
 	const int32 PlayerLevel = CombatInterface->GetPlayerLevel();
 
-	return 80.f + 2.5f * Vigor + 10.f * PlayerLevel;
+	return 50.f + 2.5f * Int + 15.f * PlayerLevel;
 }

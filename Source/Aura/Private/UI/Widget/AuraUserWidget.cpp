@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Druid Mechanics
 
 
 #include "UI/Widget/AuraUserWidget.h"
